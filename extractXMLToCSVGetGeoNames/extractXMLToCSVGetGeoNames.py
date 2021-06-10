@@ -106,48 +106,59 @@ for file in os.listdir('.'):
                     # Locate names of each hierarchical entity
                     for i in results:
                         if i['fcode'] == 'PPL':
-                            PPL = i['name']
+                            pplName = i['name']
                         else:
                             pass
 
                     for i in results:
                         if i['fcode'] == 'ADM3':
-                            ADM3 = i['name']
+                            adm3Name = i['name']
                         else:
                             pass
 
                     for i in results:
                         if i['fcode'] == 'ADM2':
-                            ADM2 = i['name']
+                            adm2Name = (i['name'] + ' County')
                         else:
                             pass
 
                     for i in results:
                         if i['fcode'] == 'ADM1':
-                            ADM1 = i['name']
+                            adm1Name = i['name']
+                            adm1Code = i['adminCode1']
                         else:
                             pass
 
                     for i in results:
                         if i['fcode'] == 'PCLI':
-                            PCLI = i['name']
+                            pcliName = i['name']
                         else:
                             pass
 
-                    # Concat the names into a single variable
-                    coverage = (PPL + ', ' + ADM3 + ', ' + ADM2 + ', ' + ADM1 + ', ' + PCLI)
+                    # Create a list to store multiple coverage descriptions
+                    coverage = list([pplName + ', ' + adm1Code,
+                                     adm3Name + ', ' + adm1Code,
+                                     adm2Name + ', ' + adm1Code])
 
                 # If the geonameIDs list is empty, define the output values as 'none'
                 else:
-                    geonameIDs.append('none')
-                    coverage = 'none'
+                    geonameIDs.append('')
+                    pplName = ''
+                    adm3Name = ''
+                    adm2Name = ''
+                    adm1Code = ''
+                    coverage = ''
 
                 # Stage the information retrieved from this file into a temporary dataframe
                 this_df = pd.DataFrame([{'mods_ID': title.removesuffix('.reference.tif'),
                                          'bbox': ('ENVELOPE(' + westbc + ', ' + eastbc + ', '
                                                   + northbc + ', ' + southbc + ')'),
                                          'geoname_ID': geonameIDs,
-                                         'coverage': coverage
+                                         'coverage': coverage,
+                                         'place': pplName,
+                                         'town': adm3Name,
+                                         'county': adm2Name,
+                                         'state': adm1Code
                                          }], columns=cols)
 
             # Append this dataframe to the dfs list

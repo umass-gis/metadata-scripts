@@ -33,24 +33,27 @@ with open(file, 'r') as f:
         row['gbl_suppressed_b'] = makebool(row['gbl_suppressed_b'])
         row['gbl_georeferenced_b'] = makebool(row['gbl_georeferenced_b'])
 
-        # Clean and format the list fields
+        # Clean and format the list fields: remove quotes + spaces + brackets, then split into a list
         subject1 = (row['dct_subject_sm']).replace("'", '')
-        subject2 = subject1.replace(' ', '')
-        subject3 = subject2.removeprefix('[')
-        subject4 = subject3.removesuffix(']')
-        row['dct_subject_sm'] = subject4.split(',')
+        subject2 = subject1.replace(', ', ',')
+        subject3 = subject2.removeprefix('[').removesuffix(']')
+        row['dct_subject_sm'] = subject3.split(',')
 
         theme1 = (row['dcat_theme_sm']).replace("'", '')
-        theme2 = theme1.replace(' ', '')
-        theme3 = theme2.removeprefix('[')
-        theme4 = theme3.removesuffix(']')
-        row['dcat_theme_sm'] = theme4.split(',')
+        theme2 = theme1.replace(', ', ',')
+        theme3 = theme2.removeprefix('[').removesuffix(']')
+        row['dcat_theme_sm'] = theme3.split(',')
 
         geonames1 = (row['umass_geonames_sm']).replace("'", '')
-        geonames2 = geonames1.replace(' ', '')
-        geonames3 = geonames2.removeprefix('[')
-        geonames4 = geonames3.removesuffix(']')
-        row['umass_geonames_sm'] = geonames4.split(',')
+        geonames2 = geonames1.replace(', ', ',')
+        geonames3 = geonames2.removeprefix('[').removesuffix(']')
+        row['umass_geonames_sm'] = geonames3.split(',')
+
+        # Clean and format a list field with commas: remove spaces + selected quotes + brackets, then split into a list
+        coverage1 = (row['dct_spatial_sm']).replace("', ", "',")
+        coverage2 = coverage1.replace("['", "[").replace("']", "]").replace(",'", ",")
+        coverage3 = coverage2.replace('[', '').replace(']', '')
+        row['dct_spatial_sm'] = coverage3.split("',")
 
         # Retrieve the 'mods_ID' value to use in naming the output file
         mods_ID = row['dct_identifier_sm']
