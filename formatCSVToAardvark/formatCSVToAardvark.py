@@ -71,18 +71,22 @@ for i, row in csv_input.iterrows():
     bbox = row['bbox']
     geoname_ID = row['geoname_ID']
     coverage = row['coverage']
+    place = row['place']
+    townName = row['town']
+    county = row['county']
+    state = row['state']
     partNumber = row['titleInfo_partNumber']
     placeTerm = row['place_placeTerm']
     dateCreated = row['dateCreated']
     year = row['year']
 
     # Append the retrieved data to the columns list
-    rows.append({'dct_title_s': ('1:20k Aerial Photograph (B/W): ' + placeTerm + ', '
-                                 + str(year) + ' (' + partNumber + ')'),
+    rows.append({'dct_title_s': ('1:20k Aerial Photograph (B/W): ' + townName + ', '
+                                 + state + ', ' + str(year) + ' (' + partNumber + ')'),
                  'dct_alternative_sm': '',
                  'dct_description_sm': ('Georeferenced black-and-white aerial photograph captured in '
-                                        + str(year) + ' of ' + placeTerm +
-                                        '. The photograph was scanned and manually '
+                                        + str(year) + ' of ' + place + ' (' + townName + ', ' + county + ', ' + state +
+                                        '). The photograph was scanned and manually '
                                         'georeferenced in ArcMap 10.8 against 2019 color orthoimagery '
                                         'from the U.S. Geological Survey.'),
                  'dct_language_sm': 'English',
@@ -133,9 +137,11 @@ for i, row in csv_input.iterrows():
                  'dct_format_s': 'GeoTIFF',
                  'gbl_fileSize_s': '90 MB',
                  'gbl_wxsIdentifier_s': '',
+                 # Multiple download links (GeoTIFF and JPG)
                  'dct_references_s': "{\"http://schema.org/url\":\"https://credo.library.umass.edu/view/full/"
-                                     + mods_ID + "\",\"http://schema.org/downloadUrl\":\"https://credo.library.umass.edu/media/"
-                                     + mods_ID + ".reference.tif\",\"http://iiif.io/api/image\":\"https://credo.library.umass.edu/iiif/"
+                                     + mods_ID + "\",\"http://schema.org/downloadUrl\":[{\"url\":\"https://credo.library.umass.edu/media/"
+                                     + mods_ID + ".reference.tif\",\"label\":\"GeoTIFF\"},{\"url\":\"https://credo.library.umass.edu/images/resize/full/"
+                                     + mods_ID + "-001.jpg\",\"label\":\"JPG\"}],\"http://iiif.io/api/image\":\"https://credo.library.umass.edu/iiif/"
                                      + mods_ID + "-001.tif/info.json\"}",
                  'id': ('umass-' + mods_ID),
                  'dct_identifier_sm': mods_ID,

@@ -10,6 +10,10 @@ These are the fields which are extracted and/or calculated:
 * `bbox` - input to `locn_geometry`, formatted as "ENVELOPE(W, E, N, S)"
 * `geoname_ID` - input to `umass_geonames_s` (if found, otherwise 'none')
 * `coverage` - input to `dct_spatial_sm` (if found, otherwise 'none')
+* `place`: populated place from the GeoNames database
+* `town`: ADM3 from the GeoNames database
+* `county`: ADM2 from the GeoNames database
+* `state`: ADM1 from the GeoNames database
 
 ## Customizations
 `cols` - update this list with the column headings that should appear in the output CSV. These fields will need to be edited for the variable `this_df` as well.
