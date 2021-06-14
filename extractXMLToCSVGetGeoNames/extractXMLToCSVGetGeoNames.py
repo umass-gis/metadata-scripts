@@ -23,7 +23,7 @@ import json
 
 
 # Define columns and rows for the output CSV
-cols = ['mods_ID', 'bbox', 'geoname_ID', 'coverage']
+cols = ['mods_ID', 'bbox', 'geoname_ID', 'coverage', 'place', 'town', 'county', 'state']
 rows = []
 
 # Create a place to store multiple dataframes for each processed file
