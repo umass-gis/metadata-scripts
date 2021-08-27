@@ -1,7 +1,7 @@
 # Metadata Scripts
 Scripts for processing metadata for GeoData, UMass Amherst's GeoBlacklight repository. The workflow transforms basic metadata about a collection of georeferenced aerial photos in the [UMass Amherst MacConnell Aerial Photo collection](https://credo.library.umass.edu/view/collection/mufs190) so that the photos can be made discoverable in [GeoBlacklight](https://geoblacklight.org) applications.
 
-To try out the scripts, the `test_data.zip` package contains 16 sample XML files of georeferenced aerial photos of the town of Amherst, MA, the file `scua.csv` with additional metadata about the full aerial photo collection, and outputs from each of the scripts.
+To try out the scripts, the `test_data.zip` package contains 16 sample XML files of georeferenced aerial photos of the town of Amherst, MA, the files `scua.csv` and `annotation.csv` with additional metadata about the full aerial photo collection.
 
 ## Step 1: extractXMLToCSVGetGeoNames.py
 Iterates through multiple XML files containing bounding coordinates, extracts relevant data based on tags, uses API queries to retrieve coverage information from the GeoNames database, and aggregates the information into a single CSV.
