@@ -33,7 +33,7 @@ cols = ['dct_title_s',
         'dct_issued_s',
         'gbl_indexYear_i',
         # 'gbl_dateRange_drsim',
-        # 'umass_annotated_s',
+        'umass_annotated_s',
         'umass_geonames_sm',
         'dct_spatial_sm',
         'locn_geometry',
@@ -79,6 +79,7 @@ for i, row in csv_input.iterrows():
     placeTerm = row['place_placeTerm']
     dateCreated = row['dateCreated']
     year = row['year']
+    annotated = row['Annotation']
 
     # Append the retrieved data to the columns list
     rows.append({'dct_title_s': ('1:20k Aerial Photograph (B/W): ' + townName + ', '
@@ -115,7 +116,7 @@ for i, row in csv_input.iterrows():
                  'dct_issued_s': dateCreated,
                  'gbl_indexYear_i': year,
                  'gbl_dateRange_drsim': '',
-                 'umass_annotated_s': '',  # enter manually or update in workflow
+                 'umass_annotated_s': annotated,
                  'umass_geonames_sm': geoname_ID,
                  'dct_spatial_sm': coverage,
                  'locn_geometry': bbox,
@@ -141,7 +142,7 @@ for i, row in csv_input.iterrows():
                  'dct_references_s': "{\"http://schema.org/url\":\"https://credo.library.umass.edu/view/full/"
                                      + mods_ID + "\",\"http://schema.org/downloadUrl\":[{\"url\":\"https://credo.library.umass.edu/media/"
                                      + mods_ID + ".reference.tif\",\"label\":\"GeoTIFF\"},{\"url\":\"https://credo.library.umass.edu/images/resize/full/"
-                                     + mods_ID + "-001.jpg\",\"label\":\"JPG\"}],\"http://iiif.io/api/image\":\"https://credo.library.umass.edu/iiif/"
+                                     + mods_ID + "-001.jpg\",\"label\":\"High-Res JPG\"}],\"http://iiif.io/api/image\":\"https://credo.library.umass.edu/iiif/"
                                      + mods_ID + "-001.tif/info.json\"}",
                  'id': ('umass-' + mods_ID),
                  'dct_identifier_sm': mods_ID,

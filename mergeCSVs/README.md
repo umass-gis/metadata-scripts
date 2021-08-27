@@ -1,5 +1,5 @@
 # Merge CSVs
-This Python script merges two CSVs based on a common field, `mods_ID`. The script is is designed to merge the output from `extractXMLToCSVGetGeoNames.py` with additional metadata from the [UMass Amherst MacConnell Aerial Photo collection](https://credo.library.umass.edu/view/collection/mufs190).
+This Python script merges three CSVs based on a common field, `mods_ID`. The script is is designed to merge the output from `extractXMLToCSVGetGeoNames.py` with additional metadata from the [UMass Amherst MacConnell Aerial Photo collection](https://credo.library.umass.edu/view/collection/mufs190).
 
 These are the output fields:
 * `mods_ID` - input to `dct_identifier_sm`
@@ -14,3 +14,4 @@ These are the output fields:
 * `place_placeTerm` - used in calculations
 * `dateCreated` - input to `dct_temporal_sm` and `dct_issued_s`
 * `year` - input to `gbl_indexYear_i` and used in calculations
+* `Annotation` – input to `annotated`
