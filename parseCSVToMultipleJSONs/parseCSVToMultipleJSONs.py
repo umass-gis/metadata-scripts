@@ -27,7 +27,7 @@ with open(file, 'r') as f:
     for row in reader:
 
         # Format the integer fields
-        row['gbl_indexYear_i'] = int(row['gbl_indexYear_i'])
+        row['gbl_indexYear_im'] = int(row['gbl_indexYear_im'])
 
         # Format the boolean fields
         row['gbl_suppressed_b'] = makebool(row['gbl_suppressed_b'])

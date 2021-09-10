@@ -31,13 +31,11 @@ cols = ['dct_title_s',
         # 'dcat_keyword_sm',
         'dct_temporal_sm',
         'dct_issued_s',
-        'gbl_indexYear_i',
+        'gbl_indexYear_im',
         # 'gbl_dateRange_drsim',
-        'umass_annotated_s',
-        'umass_geonames_sm',
         'dct_spatial_sm',
         'locn_geometry',
-        # 'dcat_centroid_s',
+        # 'dcat_centroid_ss',
         # 'dct_relation_sm',
         'pcdm_memberOf_sm',
         # 'dct_isPartOf_sm',
@@ -58,7 +56,9 @@ cols = ['dct_title_s',
         'gbl_mdModified_dt',
         'gbl_mdVersion_s',
         'gbl_suppressed_b',
-        'gbl_georeferenced_b']
+        'gbl_georeferenced_b',
+        'umass_annotated_s',
+        'umass_geonames_sm',]
 
 # Read the CSV
 csv_input = pd.read_csv(file)
@@ -79,48 +79,38 @@ for i, row in csv_input.iterrows():
     placeTerm = row['place_placeTerm']
     dateCreated = row['dateCreated']
     year = row['year']
-    annotated = row['Annotation']
+    annotated = row['annotation']
 
     # Append the retrieved data to the columns list
-    rows.append({'dct_title_s': ('1:20k Aerial Photograph (B/W): ' + townName + ', '
-                                 + state + ', ' + str(year) + ' (' + partNumber + ')'),
+    rows.append({'dct_title_s': '1:20k Aerial Photograph (B/W): ' + townName + ', ' + state + ', ' + str(year) + ' (' + partNumber + ')'),
                  'dct_alternative_sm': '',
-                 'dct_description_sm': ('Georeferenced black-and-white aerial photograph captured in '
-                                        + str(year) + ' of ' + place + ' (' + townName + ', ' + county + ', ' + state +
-                                        '). The photograph was scanned and manually '
-                                        'georeferenced in ArcMap 10.8 against 2019 color orthoimagery '
-                                        'from the U.S. Geological Survey.'),
-                 'dct_language_sm': 'English',
+                 'dct_description_sm': ('Georeferenced black-and-white aerial photograph captured in ' + str(year) + ' of ' + place + ' (' + townName + ', ' + county + ', ' + state + '). The photograph was scanned and manually georeferenced in ArcMap 10.8 against 2019 color orthoimagery from the U.S. Geological Survey.'),
+                 'dct_language_sm': 'eng',
                  'dct_creator_sm': 'MacConnell, William Preston, 1918-',
-                 'dct_publisher_sm': 'University of Massachusetts at Amherst. Department of Forestry and Wildlife '
-                                     'Management',
+                 'dct_publisher_sm': 'University of Massachusetts at Amherst. Department of Forestry and Wildlife Management',
                  'schema_provider_s': 'UMass',
                  'gbl_resourceClass_sm': 'Imagery',
-                 'gbl_resourceType_sm': 'Raster',
+                 'gbl_resourceType_sm': 'Aerial photographs',
                  'dct_subject_sm': [
-                     'Environment',
-                     'Imagery and Base Maps',
-                     'Land Cover',
-                     'Planning and Cadastral',
-                     'Structure'
+                    'Environment',
+                    'Imagery and Base Maps',
+                    'Planning and Cadastral',
+                    'Structure'
                  ],
                  'dcat_theme_sm': [
-                     'environment',
-                     'imageryBaseMapsEarthCover',
-                     'inlandWaters',
-                     'planningCadastre',
-                     'structure'
+                    'Environment',
+                    'Imagery and Base Maps',
+                    'Planning and Cadastral',
+                    'Structure'
                  ],
                  'dcat_keyword_sm': '',
                  'dct_temporal_sm': dateCreated,
                  'dct_issued_s': dateCreated,
-                 'gbl_indexYear_i': year,
+                 'gbl_indexYear_im': year,
                  'gbl_dateRange_drsim': '',
-                 'umass_annotated_s': annotated,
-                 'umass_geonames_sm': geoname_ID,
                  'dct_spatial_sm': coverage,
                  'locn_geometry': bbox,
-                 'dcat_centroid_s': '',
+                 'dcat_centroid_ss': '',
                  'dct_relation_sm': '',
                  'pcdm_memberOf_sm': 'William P. MacConnell Aerial Photograph Collection',
                  'dct_isPartOf_sm': '',
@@ -128,11 +118,8 @@ for i, row in csv_input.iterrows():
                  'dct_isVersionOf_sm': '',
                  'dct_replaces_sm': '',
                  'dct_isReplacedBy_sm': '',
-                 'dct_rights_sm': 'Requests to publish, redistribute, or replicate this material should be addressed '
-                                  'to Special Collections and University Archives, University of Massachusetts Amherst '
-                                  'Libraries.',
-                 'dct_rightsHolder_sm': 'Special Collections and University Archives, University of Massachusetts '
-                                        'Amherst Libraries',
+                 'dct_rights_sm': 'Requests to publish, redistribute, or replicate this material should be addressed to Special Collections and University Archives, University of Massachusetts Amherst Libraries.',
+                 'dct_rightsHolder_sm': 'Special Collections and University Archives, University of Massachusetts Amherst Libraries',
                  'dct_license_sm': '',
                  'dct_accessRights_s': 'Public',
                  'dct_format_s': 'GeoTIFF',
@@ -149,7 +136,9 @@ for i, row in csv_input.iterrows():
                  'gbl_mdModified_dt': dt_string,
                  'gbl_mdVersion_s': 'Aardvark',
                  'gbl_suppressed_b': False,
-                 'gbl_georeferenced_b': True
+                 'gbl_georeferenced_b': True,
+                 'umass_annotated_s': annotated,
+                 'umass_geonames_sm': geoname_ID
                  })
 
 # Write the dataframe to csv

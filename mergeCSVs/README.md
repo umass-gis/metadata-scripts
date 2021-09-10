@@ -14,4 +14,4 @@ These are the output fields:
 * `place_placeTerm` - used in calculations
 * `dateCreated` - input to `dct_temporal_sm` and `dct_issued_s`
 * `year` - input to `gbl_indexYear_i` and used in calculations
-* `Annotation` – input to `annotated`
+* `annotation` – input to `annotated`
