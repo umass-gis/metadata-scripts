@@ -12,7 +12,7 @@ Scripts for creating geospatial metadata in the [OpenGeoMetadata Aardvark](https
 |:-----|:-------|:--------|
 | 1    | [extractXMLToCSVGetGeoNames.py](#step-1-extract-xml-to-csv-and-get-geonames) | Iterates through multiple XML files containing bounding coordinates, extracts relevant data based on tags, uses API queries to retrieve coverage information from the GeoNames database, and aggregates the information into a single CSV. |
 | 2    | [mergeCSVs.py](#step-2-merge-csvs) | Merges the output from Step 1 with another CSV containing additional metadata, based on a shared unique ID. |
-| 3    | [formatCSVtoAardvark.py](#step-3-format-csv-to-ardvark) | Formats the output from Step 2 into the OGM Aardvark metadata schema. |
+| 3    | [formatCSVtoAardvark.py](#step-3-format-csv-to-aardvark) | Formats the output from Step 2 into the OGM Aardvark metadata schema. |
 | 4    | [parseCSVToMultipleJSONs.py](#step-4-parse-csv-to-multiple-jsons) | Parses the output from Step 3 into multiple JSON files (one per item) that can be ingested into GeoBlacklight applications. |
 
 ## Try it yourself!
@@ -61,7 +61,7 @@ This Python script merges three CSVs based on the unique ID, `mods_ID`. The scri
 
 ### Output Fields
 
-These are the fields that are extracted and/or calculated (in addition to those above)
+These are the fields that are extracted and/or calculated (in addition to those above):
 
 | Field        | Description                                                      | Matching field in OGM Aardvark |
 |:-------------|:-----------------------------------------------------------------|:-------------------------------|
