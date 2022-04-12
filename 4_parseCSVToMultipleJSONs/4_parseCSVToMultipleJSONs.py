@@ -1,13 +1,21 @@
-# Parses a CSV with GeoBlacklight Aardvark metadata into multiple JSON files.
+# Parses a CSV with OGM Aardvark metadata into multiple JSON files.
+# Designed to format the output from 3_formatCSVToAardvark.py.
+
 # Resources: https://fivestepguide.com/technology/machine-learning/csv-rows-to-multiple-json-python-pandas/
 
 # Import the required libraries
+import os
 import csv
 import json
 
-# Define the CSV to be parsed - should be the output from formatCSVToAardvark.py
-file = 'aardvark.csv'
+# Define the folder where the output from Step 3 is located
+folder = 'test_data'
 
+# Define the directory path to this folder, change directory
+os.chdir('/users/becky/PycharmProjects/' + folder)
+
+# Define the CSV to be parsed
+file = (folder + '_3_aardvark.csv')
 
 # Define a function to generate boolean values from strings 'True' and 'False'
 def makebool(text):
@@ -15,7 +23,6 @@ def makebool(text):
         return True
     else:
         return False
-
 
 # Open the CSV and make sure to close it when done processing
 with open(file, 'r') as f:
@@ -44,16 +51,21 @@ with open(file, 'r') as f:
         theme3 = theme2.removeprefix('[').removesuffix(']')
         row['dcat_theme_sm'] = theme3.split(',')
 
+        keyword1 = (row['dcat_keyword_sm']).replace("'", '')
+        keyword2 = keyword1.replace(', ', ',')
+        keyword3 = keyword2.removeprefix('[').removesuffix(']')
+        row['dcat_keyword_sm'] = keyword3.split(',')
+
         geonames1 = (row['umass_geonames_sm']).replace("'", '')
         geonames2 = geonames1.replace(', ', ',')
         geonames3 = geonames2.removeprefix('[').removesuffix(']')
         row['umass_geonames_sm'] = geonames3.split(',')
 
         # Clean and format a list field with commas: remove spaces + selected quotes + brackets, then split into a list
-        coverage1 = (row['dct_spatial_sm']).replace("', ", "',")
-        coverage2 = coverage1.replace("['", "[").replace("']", "]").replace(",'", ",")
-        coverage3 = coverage2.replace('[', '').replace(']', '')
-        row['dct_spatial_sm'] = coverage3.split("',")
+        spatial1 = (row['dct_spatial_sm']).replace("', ", "',")
+        spatial2 = spatial1.replace("['", "[").replace("']", "]").replace(",'", ",")
+        spatial3 = spatial2.replace('[', '').replace(']', '')
+        row['dct_spatial_sm'] = spatial3.split("',")
 
         # Retrieve the 'mods_ID' value to use in naming the output file
         mods_ID = row['dct_identifier_sm']
