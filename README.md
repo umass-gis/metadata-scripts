@@ -12,7 +12,7 @@ Scripts for creating geospatial metadata in the [OGM Aardvark](https://opengeome
 Iterates through multiple XML files containing bounding coordinates, extracts relevant data based on tags, uses API queries to retrieve coverage information from the GeoNames database, and aggregates the information into a single CSV.
 
 ### Step 2: mergeCSVs.py
-Merges the output from Step 1 with another CSV containing additional metadata. The merge is done on the unique ID `mods_ID`.
+Merges the output from Step 1 with another CSV containing additional metadata, based on a shared unique ID.
 
 ### Step 3: formatCSVtoAardvark.py
 Formats the output from Step 2 into the [OpenGeoMetadata](https://opengeometadata.org) Aardvark metadata schema.
