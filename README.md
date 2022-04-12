@@ -22,3 +22,5 @@ Parses the output from Step 3 into multiple JSON files (one per item) that can b
 
 ## Try it yourself!
 To try out the scripts, the [test_data.zip](https://github.com/umass-gis/metadata-scripts/blob/main/test_data.zip) package contains 6 sample XML files of georeferenced aerial photos and the files `scua.csv` and `annotation.csv` with additional metadata about the full aerial photo collection.
+
+You'll need to download the individual Python scripts and save them in the same folder, and then use your favorite Python application to run the scripts (like [PyCharm](https://www.jetbrains.com/pycharm/) or [Google Colab](https://colab.research.google.com)).
