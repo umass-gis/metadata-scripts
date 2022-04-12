@@ -1,12 +1,19 @@
 # Reads a CSV containing basic geospatial metadata and reformats it according
-# to the GeoBlacklight Aardvark metadata schema.
+# to the OGM Aardvark metadata schema. Designed to format the output from 2_mergeCSVs.py.
 
 # Import the required libraries
+import os
 import pandas as pd
 from datetime import datetime
 
-# Define the CSV to be formatted - should be the output from mergeCSVs.py
-file = 'merged.csv'
+# Define the folder where the output from Step 2 is located
+folder = 'test_data'
+
+# Define the directory path to this folder, change directory
+os.chdir('/users/becky/PycharmProjects/' + folder)
+
+# Define the CSV to be formatted
+file = (folder + '_2_merged.csv')
 
 # Retrieve the current date and time
 now = datetime.now()
@@ -28,14 +35,15 @@ cols = ['dct_title_s',
         'gbl_resourceType_sm',
         'dct_subject_sm',
         'dcat_theme_sm',
-        # 'dcat_keyword_sm',
+        'dcat_keyword_sm',
         'dct_temporal_sm',
         'dct_issued_s',
         'gbl_indexYear_im',
         # 'gbl_dateRange_drsim',
         'dct_spatial_sm',
         'locn_geometry',
-        # 'dcat_centroid_ss',
+        'dcat_bbox',
+        # 'dcat_centroid',
         # 'dct_relation_sm',
         'pcdm_memberOf_sm',
         # 'dct_isPartOf_sm',
@@ -58,7 +66,7 @@ cols = ['dct_title_s',
         'gbl_suppressed_b',
         'gbl_georeferenced_b',
         'umass_annotated_s',
-        'umass_geonames_sm',]
+        'umass_geonames_sm']
 
 # Read the CSV
 csv_input = pd.read_csv(file)
@@ -68,13 +76,14 @@ for i, row in csv_input.iterrows():
 
     # Retrieve contents of specific fields
     mods_ID = row['mods_ID']
+    spatial = row['spatial']
+    geometry = row['geometry']
     bbox = row['bbox']
-    geoname_ID = row['geoname_ID']
-    coverage = row['coverage']
     place = row['place']
     townName = row['town']
     county = row['county']
     state = row['state']
+    geoname_ID = row['geoname_ID']
     partNumber = row['titleInfo_partNumber']
     placeTerm = row['place_placeTerm']
     dateCreated = row['dateCreated']
@@ -82,8 +91,8 @@ for i, row in csv_input.iterrows():
     annotated = row['annotation']
 
     # Append the retrieved data to the columns list
-    rows.append({'dct_title_s': '1:20k Aerial Photograph (B/W): ' + townName + ', ' + state + ', ' + str(year) + ' (' + partNumber + ')'),
-                 'dct_alternative_sm': '',
+    rows.append({'dct_title_s': ('1:20k Aerial Photograph (B/W): ' + townName + ', ' + state + ', ' + str(year) + ' (' + partNumber + ')'),
+                 # 'dct_alternative_sm',
                  'dct_description_sm': ('Georeferenced black-and-white aerial photograph captured in ' + str(year) + ' of ' + place + ' (' + townName + ', ' + county + ', ' + state + '). The photograph was scanned and manually georeferenced in ArcMap 10.8 against 2019 color orthoimagery from the U.S. Geological Survey.'),
                  'dct_language_sm': 'eng',
                  'dct_creator_sm': 'MacConnell, William Preston, 1918-',
@@ -92,39 +101,42 @@ for i, row in csv_input.iterrows():
                  'gbl_resourceClass_sm': 'Imagery',
                  'gbl_resourceType_sm': 'Aerial photographs',
                  'dct_subject_sm': [
-                    'Environment',
-                    'Imagery and Base Maps',
-                    'Planning and Cadastral',
-                    'Structure'
+                    'Historical aerial imagery',
+                    'Black-and-white photos',
+                    'Landscape'
                  ],
                  'dcat_theme_sm': [
-                    'Environment',
-                    'Imagery and Base Maps',
-                    'Planning and Cadastral',
-                    'Structure'
+                    'Imagery',
+                    'Land Cover'
                  ],
-                 'dcat_keyword_sm': '',
-                 'dct_temporal_sm': dateCreated,
+                 'dcat_keyword_sm': [
+                     'maconnell',
+                     'maconell',
+                     'macconnel',
+                     'macconel'
+                 ],
+                 'dct_temporal_sm': year,
                  'dct_issued_s': dateCreated,
                  'gbl_indexYear_im': year,
-                 'gbl_dateRange_drsim': '',
-                 'dct_spatial_sm': coverage,
-                 'locn_geometry': bbox,
-                 'dcat_centroid_ss': '',
-                 'dct_relation_sm': '',
-                 'pcdm_memberOf_sm': 'William P. MacConnell Aerial Photograph Collection',
-                 'dct_isPartOf_sm': '',
-                 'dct_source_sm': '',
-                 'dct_isVersionOf_sm': '',
-                 'dct_replaces_sm': '',
-                 'dct_isReplacedBy_sm': '',
+                 # 'gbl_dateRange_drsim': '',
+                 'dct_spatial_sm': spatial,
+                 'locn_geometry': geometry,
+                 'dcat_bbox': bbox,
+                 # 'dcat_centroid_ss': '',
+                 # 'dct_relation_sm': '',
+                 'pcdm_memberOf_sm': 'umass-macconnell-1951',
+                 # 'dct_isPartOf_sm': '',
+                 # 'dct_source_sm': '',
+                 # 'dct_isVersionOf_sm': '',
+                 # 'dct_replaces_sm': '',
+                 # 'dct_isReplacedBy_sm': '',
                  'dct_rights_sm': 'Requests to publish, redistribute, or replicate this material should be addressed to Special Collections and University Archives, University of Massachusetts Amherst Libraries.',
                  'dct_rightsHolder_sm': 'Special Collections and University Archives, University of Massachusetts Amherst Libraries',
-                 'dct_license_sm': '',
+                 # 'dct_license_sm': '',
                  'dct_accessRights_s': 'Public',
                  'dct_format_s': 'GeoTIFF',
-                 'gbl_fileSize_s': '90 MB',
-                 'gbl_wxsIdentifier_s': '',
+                 'gbl_fileSize_s': 'about 90 MB',
+                 # gbl_wxsIdentifier_s': '',
                  # Multiple download links (GeoTIFF and JPG)
                  'dct_references_s': "{\"http://schema.org/url\":\"https://credo.library.umass.edu/view/full/"
                                      + mods_ID + "\",\"http://schema.org/downloadUrl\":[{\"url\":\"https://credo.library.umass.edu/media/"
@@ -143,4 +155,4 @@ for i, row in csv_input.iterrows():
 
 # Write the dataframe to csv
 df = pd.DataFrame(rows, columns=cols)
-df.to_csv('aardvark.csv', index=False)
+df.to_csv(folder + '_3_aardvark.csv', index=False)
