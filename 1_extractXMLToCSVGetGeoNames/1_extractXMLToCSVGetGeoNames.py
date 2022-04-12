@@ -70,7 +70,7 @@ for file in os.listdir(folderLocation):
                     'south': float(southbc),
                     'east': float(eastbc),
                     'west': float(westbc),
-                    'username': 'gislibma'
+                    'username': 'demo'
                     }
 
                 # Retrieve the Cities and Placenames information
@@ -97,7 +97,7 @@ for file in os.listdir(folderLocation):
                     # Replace 'username' with your own username
                     parametersHierarchy = {
                         'geonameId': str(geonameIDs[0]),
-                        'username': 'gislibma'
+                        'username': 'demo'
                         }
 
                     # Retrieve the Hierarchy information
