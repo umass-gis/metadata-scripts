@@ -1,6 +1,8 @@
 # Format CSV to Aardvark
 This Python script reads a CSV containing basic geospatial metadata and reformats it according to the [OGM Aardvark](https://opengeometadata.org) metadata schema. The script is designed to format the output from `2_mergeCSVs.py`.
 
+For an example of how to format an input CSV for this script, check out the file `test_data_2_merged.csv` in the [test data pack](https://github.com/umass-gis/metadata-scripts/blob/main/test_data.zip).
+
 ## Customizations
 `cols` - this list contains all the OGM Aardvark fields, as well as custom UMass fields. Fields you don't want can be commented out.
 
