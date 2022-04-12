@@ -1,9 +1,4 @@
 # Parse CSV to Multiple JSONs
-This Python script reads a CSV containing [OGM Aardvark](https://opengeometadata.org) metadata and parses it into multiple JSON files. The script is designed to parse the output from `3_formatCSVToAardvark.py`.
+This Python script reads a CSV containing [OGM Aardvark](https://opengeometadata.org) metadata and parses it into individual GeoJSON files for each record. The script is designed to parse the output from `3_formatCSVToAardvark.py`. 
 
-Several of the fields need extra formatting code in order to be properly converted from CSV to JSON:
-* Integer fields
-* Boolean fields
-* List fields
-
-The output is a single GeoJSON file for each record. 
+For an example of how to format an input CSV for this script, check out the file `test_data_3_aardvark.csv` in the [test data pack](https://github.com/umass-gis/metadata-scripts/blob/main/test_data.zip).
