@@ -1,5 +1,5 @@
 # OGM Aardvark Metadata Scripts
-Scripts for creating geospatial metadata in the [OGM Aardvark](https://opengeometadata.org) metadata schema for UMass Amherst's [GeoBlacklight](https://geoblacklight.org) repository. The workflow is designed to generate metadata for a collection of georeferenced aerial photos in the [UMass Amherst MacConnell Aerial Photo Collection](https://credo.library.umass.edu/view/collection/mufs190).
+Scripts for creating geospatial metadata in the [OpenGeoMetadata Aardvark](https://opengeometadata.org) metadata schema for UMass Amherst's [GeoBlacklight](https://geoblacklight.org) repository. The workflow is designed to generate metadata for a collection of georeferenced aerial photos in the [UMass Amherst MacConnell Aerial Photo Collection](https://credo.library.umass.edu/view/collection/mufs190).
 
 ## Required inputs
 
@@ -8,16 +8,16 @@ Scripts for creating geospatial metadata in the [OGM Aardvark](https://opengeome
 
 ## Workflow
 
-### Step 1: extractXMLToCSVGetGeoNames.py
+### Step 1: [extractXMLToCSVGetGeoNames.py](https://github.com/umass-gis/metadata-scripts/tree/main/1_extractXMLToCSVGetGeoNames)
 Iterates through multiple XML files containing bounding coordinates, extracts relevant data based on tags, uses API queries to retrieve coverage information from the GeoNames database, and aggregates the information into a single CSV.
 
-### Step 2: mergeCSVs.py
+### Step 2: [mergeCSVs.py](https://github.com/umass-gis/metadata-scripts/tree/main/2_mergeCSVs)
 Merges the output from Step 1 with another CSV containing additional metadata, based on a shared unique ID.
 
-### Step 3: formatCSVtoAardvark.py
-Formats the output from Step 2 into the [OpenGeoMetadata](https://opengeometadata.org) Aardvark metadata schema.
+### Step 3: [formatCSVtoAardvark.py](https://github.com/umass-gis/metadata-scripts/tree/main/3_formatCSVToAardvark)
+Formats the output from Step 2 into the OGM Aardvark metadata schema.
 
-### Step 4: parseCSVToMultipleJSONs.py
+### Step 4: [parseCSVToMultipleJSONs.py](https://github.com/umass-gis/metadata-scripts/tree/main/4_parseCSVToMultipleJSONs)
 Parses the output from Step 3 into multiple JSON files (one per item) that can be ingested into GeoBlacklight applications.
 
 ## Try it yourself!
