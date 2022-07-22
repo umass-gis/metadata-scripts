@@ -45,7 +45,9 @@ These are the fields that are extracted and/or calculated:
 * For XML files with multiple children, see the Python docs help on [Parsing XML](https://docs.python.org/3/library/xml.etree.elementtree.html#parsing-xml)
 * For locating buried elements in a tree, see the Python docs help on [XPath support](https://docs.python.org/3/library/xml.etree.elementtree.html#xpath-support)
 
-`spatial` - creates a list that rearranges the GeoNames parts into a custom format: `["Amherst, MA", "Town of Amherst, MA", "Hampshire County, MA"]`. These elements can be rearranged to create whatever format you prefer. See the [OGM Aaardvark](https://opengeometadata.org) metadata schema for more information about the `dct_spatial_sm` field.
+`geometry` - formats the output as a bounding box in the format `ENVELOPE(W,E,N,S)`. However, starting in GeoBlacklight 4.0 this field can be formatted as a complex geometry, which becomes the default polygon shown in the map interface. See the OGM Aardvark metadata schema for more information about the [`locn_geometry`](https://opengeometadata.org/docs/ogm-aardvark/geometry) field.
+
+`spatial` - creates a list that rearranges the GeoNames parts into a custom format: `["Amherst, MA", "Town of Amherst, MA", "Hampshire County, MA"]`. These elements can be rearranged to create whatever format you prefer. See the OGM Aaardvark metadata schema for more information about the [`dct_spatial_sm`](https://opengeometadata.org/docs/ogm-aardvark/spatial-coverage) field.
 
 `this_df` - there are several calculated fields that format the extracted title and coordinate information according to the [OGM Aaardvark](https://opengeometadata.org) metadata schema.
 
