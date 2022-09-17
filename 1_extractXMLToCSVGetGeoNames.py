@@ -2,34 +2,18 @@
 # retrieves each item's title and bounding coordinates, queries the GeoNames API to retrieve placename
 # information, and appends to a single CSV file. Requires registering with GeoNames (for free) to obtain
 # a username (http://www.geonames.org/login) and substituting this in the code.
-#
-# Converting XML to CSV: https://www.geeksforgeeks.org/convert-xml-to-csv-in-python/
-# API tutorial: https://www.dataquest.io/blog/python-api-tutorial/
-# Accessing JSON elements: https://stackoverflow.com/questions/16129652/accessing-json-elements
 
 # Import the required libraries
 import xml.etree.ElementTree as ET
 import os
 import pandas as pd
 import requests
-import json
 
-# Optional code to print a formatted JSON object (useful for testing)
-# def jprint(obj):
-    # text = json.dumps(obj, sort_keys=True, indent=4)
-    # print(text)
-
-# Define the folder where the XML files are located
-folder = 'test_data'
-
-# Define the directory path to this folder
-folderLocation = ('/users/becky/PycharmProjects/' + folder)
-
-# Change directory
-os.chdir(folderLocation)
+# The prefix that will be used to name the output file
+outputName = 'testdata'
 
 # Define columns and rows for the output CSV
-cols = ['mods_ID', 'spatial', 'geometry', 'bbox', 'place', 'town', 'county', 'state', 'geoname_ID']
+cols = ['mods_ID', 'geometry', 'bbox', 'geoname_ID', 'place', 'town_long', 'town_short', 'county', 'state']
 rows = []
 
 # Create a place to store multiple dataframes for each processed file
@@ -38,149 +22,146 @@ dfs = []
 # Start the counter
 record_count = 0
 
-# Iterate through XML files in the directory
-for file in os.listdir(folderLocation):
-    if file.endswith('.xml'):
+# Look for files in the current directory (including subfolders)
+for root, dirs, files in os.walk('.'):
 
-        # Increase the count each time a file is processed
-        record_count = record_count + 1
+    # Iterate through the XML files
+    for file in files:
+        if file.endswith('.xml'):
 
-        # Open an individual file and make sure to close it when done processing
-        with open(file, 'r') as f:
+            # Increase the count each time a file is processed
+            record_count = record_count + 1
 
-            # Read the XML file
-            tree = ET.parse(f)
-            root = tree.getroot()
+            # Figure out the filepath
+            path = os.path.join(root, file)
 
-            # Retrieve the item's title
-            for citeinfo in root.findall('./idinfo/citation/citeinfo'):
-                title = citeinfo.find('title').text
+            # Open an individual file and make sure to close it when done processing
+            with open(path, 'r') as f:
+                tree = ET.parse(f)
+                xmlRoot = tree.getroot()
 
-            # Retrieve the item's bounding coordinates
-            for bounding in root.findall('./idinfo/spdom/bounding'):
-                westbc = bounding.find('westbc').text
-                eastbc = bounding.find('eastbc').text
-                northbc = bounding.find('northbc').text
-                southbc = bounding.find('southbc').text
+                # Retrieve the item's title
+                for citeinfo in xmlRoot.findall('./idinfo/citation/citeinfo'):
+                    title = citeinfo.find('title').text
 
-                # Define the parameters to be called in the GeoNames Cities and Placenames API request
-                # Replace 'username' with your own username
-                parametersCities = {
-                    'north': float(northbc),
-                    'south': float(southbc),
-                    'east': float(eastbc),
-                    'west': float(westbc),
-                    'username': 'demo'
+                # Retrieve the item's bounding coordinates
+                for bounding in xmlRoot.findall('./idinfo/spdom/bounding'):
+                    westbc = bounding.find('westbc').text
+                    eastbc = bounding.find('eastbc').text
+                    northbc = bounding.find('northbc').text
+                    southbc = bounding.find('southbc').text
+
+                    # Calculate the center point
+                    lat = (float(northbc) + float(southbc))/2
+                    lng = (float(westbc) + float(eastbc))/2
+
+                    # Define the parameters to be called in the GeoNames Find Nearby Populated Place API request
+                    # Replace username 'demo' with your own username
+                    parameters = {
+                        'lat': float(lat),
+                        'lng': float(lng),
+                        'username': 'demo'
                     }
 
-                # Retrieve the Cities and Placenames information
-                cities = requests.get('http://api.geonames.org/citiesJSON?', params=parametersCities)
+                    # Retrieve the Nearby Populated Place information
+                    populatedPlace = requests.get('http://api.geonames.org/findNearbyPlaceNameJSON?', params=parameters)
 
-                # Print the formatted JSON of this query (useful for testing)
-                # jprint(cities.json())
-
-                # Filter out just the 'geonames' key
-                results = cities.json()['geonames']
-
-                # Create an empty list to store multiple GeoNamesIDs
-                geonameIDs = []
-
-                # Locate individual values for 'geonameID' and append them to the list
-                for i in results:
-                    geonameID = i['geonameId']
-                    geonameIDs.append(str(geonameID))
-
-                # Proceed only if the geonameIDs list isn't empty
-                if geonameIDs:
-
-                    # Define the parameters to be called in the GeoNames Hierarchy API request
-                    # Replace 'username' with your own username
-                    parametersHierarchy = {
-                        'geonameId': str(geonameIDs[0]),
-                        'username': 'demo'
-                        }
-
-                    # Retrieve the Hierarchy information
-                    hierarchy = requests.get('http://api.geonames.org/hierarchyJSON?', params=parametersHierarchy)
-
-                    # Print the formatted JSON of this query (useful for testing)
-                    # jprint(hierarchy.json())
+                    # Check if the key is present in the dictionary before accessing it
+                    if 'geonames' not in populatedPlace.json():
+                        print("The Find Nearby Populated Place API did not work for", title)
+                        continue
 
                     # Filter out just the 'geonames' key
-                    results = hierarchy.json()['geonames']
+                    results = populatedPlace.json()['geonames']
 
-                    # Locate names of each hierarchical entity
+                    # Locate individual values from results
                     for i in results:
-                        if i['fcode'] == 'PPL':
-                            pplName = i['name']
-                        else:
-                            pass
+                        geonameID = i['geonameId']
+                        pplName = i['name']
 
-                    for i in results:
-                        if i['fcode'] == 'ADM3':
-                            adm3Name = i['name']
-                        else:
-                            pass
+                    # Proceed only if the geonameID isn't null
+                    if geonameID is not None:
 
-                    for i in results:
-                        if i['fcode'] == 'ADM2':
-                            adm2Name = (i['name'] + ' County')
-                        else:
-                            pass
+                        # Define the parameters to be called in the GeoNames Hierarchy API request
+                        # Replace 'username' with your own username
+                        parametersHierarchy = {
+                            'geonameId': str(geonameID),
+                            'username': 'demo'
+                        }
 
-                    for i in results:
-                        if i['fcode'] == 'ADM1':
-                            adm1Name = i['name']
-                            adm1Code = i['adminCode1']
-                        else:
-                            pass
+                        # Retrieve the Hierarchy information
+                        hierarchy = requests.get('http://api.geonames.org/hierarchyJSON?', params=parametersHierarchy)
 
-                    for i in results:
-                        if i['fcode'] == 'PCLI':
-                            pcliName = i['name']
-                        else:
-                            pass
+                        # Check if the key is present in the dictionary before accessing it
+                        if 'geonames' not in hierarchy.json():
+                            print("The Hierarchy API did not work for", title)
+                            continue
 
-                    # Create a list to store multiple coverage descriptions
-                    spatial = list([pplName + ', ' + adm1Code,
-                                    adm3Name + ', ' + adm1Code,
-                                    adm2Name + ', ' + adm1Code])
+                        # Filter out just the 'geonames' key
+                        results = hierarchy.json()['geonames']
 
-                # If the geonameIDs list is empty, define the output values as 'none'
-                else:
-                    geonameIDs.append('')
-                    pplName = ''
-                    adm3Name = ''
-                    adm2Name = ''
-                    adm1Code = ''
-                    spatial = ''
+                        for i in results:
+                            if i['fcode'] == 'ADM3':
+                                adm3Name = i['name']
+                            else:
+                                pass
 
-                # Stage the information retrieved from this file into a temporary dataframe
-                this_df = pd.DataFrame([{'mods_ID': title.removesuffix('.reference.tif'),
-                                         'spatial': spatial,
-                                         'geometry': ('ENVELOPE(' + westbc + ', ' + eastbc + ', '
+                        for i in results:
+                            if i['fcode'] == 'ADM2':
+                                adm2Name = (i['name'] + ' County')
+                            else:
+                                pass
+
+                        for i in results:
+                            if i['fcode'] == 'ADM1':
+                                adm1Name = i['name']
+                                adm1Code = i['adminCode1']
+                            else:
+                                pass
+
+                        # Reformat adm3Name to remove "Town of" or "City of ... Town"
+                        text1 = 'City of '
+                        text2 = 'Town of '
+                        text3 = ' Town'
+                        adm3Short = adm3Name.replace(text1, '').replace(text2, '').replace(text3, '')
+
+                    # If the geonameID is null, define the output values as 'none'
+                    else:
+                        geonameID = ''
+                        pplName = ''
+                        adm3Name = ''
+                        adm2Name = ''
+                        adm1Code = ''
+
+                    # Stage the information retrieved from this file into a temporary dataframe
+                    this_df = pd.DataFrame([{'mods_ID': title.removesuffix('.reference.tif'),
+                                             'geometry': ('ENVELOPE(' + westbc + ', ' + eastbc + ', '
+                                                          + northbc + ', ' + southbc + ')'),
+                                             'bbox': ('ENVELOPE(' + westbc + ', ' + eastbc + ', '
                                                       + northbc + ', ' + southbc + ')'),
-                                         'bbox': ('ENVELOPE(' + westbc + ', ' + eastbc + ', '
-                                                  + northbc + ', ' + southbc + ')'),
-                                         'place': pplName,
-                                         'town': adm3Name,
-                                         'county': adm2Name,
-                                         'state': adm1Code,
-                                         'geoname_ID': geonameIDs
-                                         }], columns=cols)
+                                             'geoname_ID': geonameID,
+                                             'place': pplName,
+                                             'town_long': adm3Name,
+                                             'town_short': adm3Short,
+                                             'county': adm2Name,
+                                             'state': adm1Code
+                                             }], columns=cols)
 
-            # Append this dataframe to the dfs list
-            dfs.append(this_df)
+                # Append this dataframe to the dfs list
+                dfs.append(this_df)
 
-    # Do nothing if the file ends with anything other than .xml
-    else:
-        pass
+                # Print information about where we are in the process
+                print(record_count, ": ", title)
+
+        # Do nothing if the file ends with anything other than .xml
+        else:
+            pass
 
 # Print the number of records processed
-print(record_count)
+print("Successfully processed a total of ", record_count, " records.")
 
 # Concatenate all the dfs into a single dataframe
 df = pd.concat(dfs)
 
 # Write the dataframe to csv
-df.to_csv(folder + '_1_extract.csv', index=False)
+df.to_csv(outputName + '_1_extract.csv', index=False)
