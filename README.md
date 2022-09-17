@@ -14,7 +14,7 @@ Scripts for creating geospatial metadata in the [OpenGeoMetadata Aardvark](https
 | 2    | [mergeCSVs.py](#step-2-merge-csvs) | Merges the output from Step 1 with another CSV containing additional metadata, based on a shared unique ID. |
 | 3    | [formatCSVtoAardvark.py](#step-3-format-csv-to-aardvark) | Formats the output from Step 2 into the OGM Aardvark metadata schema. |
 | 4    | [parseCSVToMultipleJSONs.py](#step-4-parse-csv-to-multiple-jsons) | Parses the output from Step 3 into multiple JSON files (one per item) that can be ingested into GeoBlacklight applications. |
-| 5    | [validateJSONs.py](#step-4-validate-jsons) | Validates the output JSONs from Step 4 against an OGM Aardvark JSON file. |
+| 5    | [validateJSONs.py](#step-5-validate-jsons) | Validates the output JSONs from Step 4 against an OGM Aardvark JSON file. |
 
 
 ## Step 1: Extract XML to CSV and Get GeoNames
