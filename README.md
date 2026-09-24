@@ -1,5 +1,5 @@
 # Metadata Scripts for UMAP GeoData
-Scripts for creating geospatial metadata in the [OpenGeoMetadata Aardvark](https://opengeometadata.org) metadata schema. These records are made discoverabel in the UMass Amherst Portal for Geospatial Data, or [UMAP GeoData](https://geodata.library.umass.edu/), which runs on open-source [GeoBlacklight](https://geoblacklight.org/) software.
+Scripts for creating geospatial metadata in the [OpenGeoMetadata Aardvark](https://opengeometadata.org) metadata schema. These records are made discoverable in the UMass Amherst Portal for Geospatial Data, or [UMAP GeoData](https://geodata.library.umass.edu/), which runs on open-source [GeoBlacklight](https://geoblacklight.org/) software.
 
 ## ScholarWorks Datasets
 **These scripts can be used to make datasets in a DSpace repository discoverable in a local GeoBlacklight instance.**
