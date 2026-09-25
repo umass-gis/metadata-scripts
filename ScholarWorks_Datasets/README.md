@@ -14,13 +14,18 @@ flowchart LR
     A[item_ids.txt<br/>DSpace item UUIDs] --> B[Fetch + map via<br/>DSpace REST API]
     B --> C[aardvark_data_for_review.xlsx]
     C -->|manual edits| C
-    C --> D[Re-ingest xlsx<br/>recompute geometry/bbox/references]
     
-    %% Force E to sit directly below D
-    D ~~~ E
-    D --> E[aardvark_json/*.json<br/>one file per record id]
-    
+    %% Subgraph forces a vertical Top-to-Bottom flow for just D and E
+    subgraph vertical_stack [" "]
+        direction TB
+        D[Re-ingest xlsx<br/>recompute geometry/bbox/references] --> E[aardvark_json/*.json<br/>one file per record id]
+    end
+
+    C --> D
     E -.optional.-> F[Validate against<br/>Aardvark JSON Schema]
+
+    %% Hides the border of the subgraph container box
+    style vertical_stack fill:none,stroke:none
 ```
 
 ## Contents
