@@ -15,6 +15,7 @@ flowchart LR
     B --> C[aardvark_data_for_review.xlsx]
     C -->|manual edits| C
     C --> D[Re-ingest xlsx<br/>recompute geometry/bbox/references]
+    D ~~~ E
     D --> E[aardvark_json/*.json<br/>one file per record id]
     E -.optional.-> F[Validate against<br/>Aardvark JSON Schema]
 ```
